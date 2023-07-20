@@ -17,7 +17,7 @@ export class AppController {
 
   @Post("add")
   @UseInterceptors(
-    FileInterceptor("image", {
+    FilesInterceptor("image", 2, {
       storage: diskStorage({
         destination: "./uploads",
         filename: (req, file, cb) => {
@@ -30,9 +30,9 @@ export class AppController {
       }),
     }),
   )
-  addImage(@UploadedFile(new FileSizeValidationPipe()) file: Array<Express.Multer.File>, @Res() res: Response) {
-    console.log(file);
-    return "File upload API";
+  addImage(@UploadedFiles(new FileSizeValidationPipe()) files: Array<Express.Multer.File>, @Res() res: Response) {
+    console.log(files, "hayhaybrother");
+    res.status(200).json("successfully uploaded");
   }
 
   @Post("upload")
