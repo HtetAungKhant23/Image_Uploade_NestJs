@@ -1,10 +1,8 @@
-import { Controller, Get, Post, Res, UploadedFile, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express/multer";
-import { diskStorage } from "multer";
-import { extname } from "path";
+import { FilesInterceptor } from "@nestjs/platform-express/multer";
 import { FileSizeValidationPipe } from "./libs/FileInterceptor";
-import { Response } from "express";
+import { fileStorage } from "./helpers/file-storage";
 
 @Controller("image")
 export class AppController {
@@ -16,23 +14,10 @@ export class AppController {
   }
 
   @Post("add")
-  @UseInterceptors(
-    FilesInterceptor("image", 2, {
-      storage: diskStorage({
-        destination: "./uploads",
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join("");
-          return cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  addImage(@UploadedFiles(new FileSizeValidationPipe()) files: Array<Express.Multer.File>, @Res() res: Response) {
-    console.log(files, "hayhaybrother");
-    res.status(200).json("successfully uploaded");
+  @UseInterceptors(FilesInterceptor("image", 2, fileStorage))
+  addImage(@UploadedFiles(new FileSizeValidationPipe()) files: Array<Express.Multer.File>) {
+    console.log("hayahya");
+    return this.appService.upload(files);
   }
 
   @Post("upload")
