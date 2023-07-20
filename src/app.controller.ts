@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Res, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Post, Res, UploadedFile, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { FileInterceptor } from "@nestjs/platform-express/multer";
+import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express/multer";
 import { diskStorage } from "multer";
 import { extname } from "path";
 import { FileSizeValidationPipe } from "./libs/FileInterceptor";
@@ -30,8 +30,15 @@ export class AppController {
       }),
     }),
   )
-  addImage(@UploadedFile(new FileSizeValidationPipe()) file: Express.Multer.File, @Res() res: Response) {
+  addImage(@UploadedFile(new FileSizeValidationPipe()) file: Array<Express.Multer.File>, @Res() res: Response) {
     console.log(file);
     return "File upload API";
+  }
+
+  @Post("upload")
+  @UseInterceptors(FilesInterceptor("files"))
+  uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
+    console.log(files);
+    return "good job bitch";
   }
 }
