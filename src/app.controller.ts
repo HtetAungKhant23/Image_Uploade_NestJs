@@ -27,3 +27,4 @@ export class AppController {
     res.sendFile(path.join(__dirname, ".././uploads/" + id));
   }
 }
+  
