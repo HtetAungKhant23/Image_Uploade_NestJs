@@ -8,6 +8,6 @@ export class AppService {
 
   upload(files: Array<Express.Multer.File>) {
     console.log(files);
-    return "File uploaded successfully";
+    return 'Success'
   }
 }

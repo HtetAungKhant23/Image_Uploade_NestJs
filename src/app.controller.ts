@@ -1,8 +1,10 @@
-import { Controller, Get, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Res, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { FilesInterceptor } from "@nestjs/platform-express/multer";
 import { FileSizeValidationPipe } from "./libs/FileInterceptor";
 import { fileStorage } from "./helpers/file-storage";
+import { Response } from "express";
+import * as path from "path";
 
 @Controller("image")
 export class AppController {
@@ -20,10 +22,8 @@ export class AppController {
     return this.appService.upload(files);
   }
 
-  @Post("upload")
-  @UseInterceptors(FilesInterceptor("files"))
-  uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
-    console.log(files);
-    return "good job bitch";
+  @Get(":id")
+  async getImage(@Param("id") id: string, @Res() res: Response) {
+    res.sendFile(path.join(__dirname, ".././uploads/" + id));
   }
 }
