@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { v2 as cloudinary } from "cloudinary";
 
 @Injectable()
 export class AppService {
@@ -6,8 +7,10 @@ export class AppService {
     return "Hello World!";
   }
 
-  upload(files: Array<Express.Multer.File>) {
+  async upload(files: Array<Express.Multer.File>) {
     console.log(files);
-    return 'Success'
+    const result = await cloudinary.uploader.upload(files[0].path);
+    console.log(result, "hrhrhrhr");
+    return "Success";
   }
 }
