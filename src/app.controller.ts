@@ -19,10 +19,10 @@ export class AppController {
   @UseInterceptors(FilesInterceptor("image", 2, fileStorage))
   addImage(@UploadedFiles(new FileSizeValidationPipe()) files: Array<Express.Multer.File>, @Res() res: Response) {
     console.log("hayahya");
-    // return this.appService.upload(files);
     console.log(files[0].path);
     console.log(path.join(__dirname, ".././" + files[0].path));
-    return files[0].path;
+    return this.appService.upload(files);
+    // return files[0].path;
   }
 
   @Get(":id")

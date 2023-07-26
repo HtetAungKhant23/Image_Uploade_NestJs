@@ -9,7 +9,8 @@ export class AppService {
 
   async upload(files: Array<Express.Multer.File>) {
     console.log(files);
-    // const result = await cloudinary.uploader.upload(files[0].path);
+    const result = await cloudinary.uploader.upload(files[0].path);
+    console.log(result);
     return files;
   }
 }

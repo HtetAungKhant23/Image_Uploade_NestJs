@@ -8,6 +8,6 @@ async function bootstrap() {
 
   app.useStaticAssets(path.join(__dirname, ".././uploads"));
 
-  await app.listen(3000);
+  await app.listen(5000);
 }
 bootstrap();
